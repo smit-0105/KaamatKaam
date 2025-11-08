@@ -21,6 +21,9 @@ import NotFound from "./pages/NotFound";
 const App: React.FC = () => {
   return (
     <Router>
+      {/* ✅ You can test Tailwind here safely */}
+     
+
       <Routes>
         {/* Auth Routes */}
         <Route element={<AuthLayout />}>
