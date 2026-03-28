@@ -10,6 +10,12 @@ const stopSchema = new mongoose.Schema({
 const rideSchema = new mongoose.Schema({
   driver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 
+  transportMode: {
+    type: String,
+    enum: ['Car', 'Bus', 'Train', 'Flight', 'Two-Wheeler'],
+    default: 'Car'
+  },
+
   // Route
   origin: {
     city: { type: String, required: [true, 'Origin city is required'], trim: true },

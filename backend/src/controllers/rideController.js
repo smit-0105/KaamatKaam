@@ -8,13 +8,14 @@ import { catchAsync } from '../utils/catchAsync.js';
 // @access  Private
 export const publishRide = catchAsync(async (req, res, next) => {
   const {
-    origin, destination, stops, departureDate, departureTime,
+    transportMode, origin, destination, stops, departureDate, departureTime,
     estimatedDuration, totalWeightCapacity, pricePerKg, vehicle,
     acceptedItemTypes, description, isInstantBooking,
   } = req.body;
 
   const ride = await Ride.create({
     driver: req.user.id,
+    transportMode: transportMode || 'Car',
     origin,
     destination,
     stops: stops || [],

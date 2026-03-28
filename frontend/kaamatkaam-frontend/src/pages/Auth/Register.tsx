@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Mail, Lock, Eye, EyeOff, Car, User, Phone } from "lucide-react";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
+import Logo from "../../Images/Logo.jpg";
 import toast from "react-hot-toast";
 
 const Register: React.FC = () => {
@@ -79,12 +80,7 @@ const Register: React.FC = () => {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
-                <Car className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold">
-                <span className="text-primary-600">Kaamat</span><span className="text-accent-500">Kaam</span>
-              </span>
+              <img src={Logo} alt="KaamatKaam Logo" className="h-12 w-auto object-contain rounded-lg shadow-sm" />
             </Link>
             <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
             <p className="text-gray-500 mt-2">Start sharing rides today</p>

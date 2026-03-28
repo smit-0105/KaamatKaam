@@ -8,28 +8,28 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#E6F9FF',
-          100: '#B3EEFF',
-          200: '#80E3FF',
-          300: '#4DD8FF',
-          400: '#1ACDFF',
-          500: '#00AFF5', // BlaBlaCar teal
-          600: '#008CC4',
-          700: '#006993',
-          800: '#004662',
-          900: '#002331',
+          50: '#EEF2FF',
+          100: '#E0E7FF',
+          200: '#C7D2FE',
+          300: '#A5B4FC',
+          400: '#818CF8',
+          500: '#6366F1', // Vibrant Modern Indigo
+          600: '#4F46E5', // Deep Vibrant
+          700: '#4338CA',
+          800: '#3730A3',
+          900: '#312E81',
         },
         accent: {
-          50: '#E8FFF3',
-          100: '#B8FFD9',
-          200: '#88FFBF',
-          300: '#58FFA5',
-          400: '#28FF8B',
-          500: '#00D35B', // Green accent
-          600: '#00A348',
-          700: '#007334',
-          800: '#004321',
-          900: '#00130D',
+          50: '#FDF4FF',
+          100: '#FAE8FF',
+          200: '#F5D0FE',
+          300: '#F0ABFC',
+          400: '#E879F9',
+          500: '#D946EF', // Vibrant Fuchsia/Pink
+          600: '#C026D3', // Action Vibrant
+          700: '#A21CAF',
+          800: '#86198F',
+          900: '#701A75',
         },
         dark: {
           50: '#F5F5F5',

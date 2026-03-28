@@ -18,6 +18,7 @@ const PublishRide: React.FC = () => {
   const [formData, setFormData] = useState({
     originCity: "", originAddress: "", destinationCity: "", destinationAddress: "",
     departureDate: "", departureTime: "", totalWeightCapacity: 5, pricePerKg: 0,
+    transportMode: "Car",
     vehicleMake: user?.vehicle?.make || "", vehicleModel: user?.vehicle?.model || "", vehicleColor: user?.vehicle?.color || "",
     description: "", isInstantBooking: false,
     acceptedItemTypes: ["General"] as string[],
@@ -29,21 +30,24 @@ const PublishRide: React.FC = () => {
     setLoading(true);
     try {
       await rideApi.publish({
+        transportMode: formData.transportMode,
         origin: { city: formData.originCity, address: formData.originAddress },
         destination: { city: formData.destinationCity, address: formData.destinationAddress },
         departureDate: formData.departureDate,
         departureTime: formData.departureTime,
         totalWeightCapacity: formData.totalWeightCapacity,
         pricePerKg: formData.pricePerKg,
-        vehicle: { make: formData.vehicleMake, model: formData.vehicleModel, color: formData.vehicleColor },
+        vehicle: ["Car", "Two-Wheeler"].includes(formData.transportMode) 
+          ? { make: formData.vehicleMake, model: formData.vehicleModel, color: formData.vehicleColor }
+          : undefined,
         acceptedItemTypes: formData.acceptedItemTypes,
         description: formData.description,
         isInstantBooking: formData.isInstantBooking,
       });
-      toast.success("Ride published successfully!");
+      toast.success("Trip published successfully!");
       navigate("/dashboard/rides");
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to publish ride");
+      toast.error(err.response?.data?.message || "Failed to publish trip");
     } finally {
       setLoading(false);
     }
@@ -52,14 +56,14 @@ const PublishRide: React.FC = () => {
   const canNext = () => {
     if (step === 0) return formData.originCity && formData.destinationCity;
     if (step === 1) return formData.departureDate && formData.departureTime;
-    if (step === 2) return formData.totalWeightCapacity > 0 && formData.pricePerKg > 0;
+    if (step === 2) return formData.totalWeightCapacity > 0 && formData.pricePerKg >= 0;
     return true;
   };
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-2">Publish a trip</h1>
-      <p className="text-gray-500 mb-8">Share your vehicle's empty space and help others send parcels</p>
+      <p className="text-gray-500 mb-8">Traveling soon? Turn your empty luggage space into extra cash.</p>
 
       {/* Stepper */}
       <div className="flex items-center justify-between mb-10">
@@ -111,10 +115,27 @@ const PublishRide: React.FC = () => {
             <Input label="Price per kg (₹) *" type="number" min="0" placeholder="50" value={formData.pricePerKg || ""} onChange={(e) => setField("pricePerKg", Number(e.target.value))} icon={<IndianRupee className="w-5 h-5" />} />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <Input label="Vehicle make" placeholder="Maruti" value={formData.vehicleMake} onChange={(e) => setField("vehicleMake", e.target.value)} />
-            <Input label="Vehicle model" placeholder="Swift" value={formData.vehicleModel} onChange={(e) => setField("vehicleModel", e.target.value)} />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Mode of Transport *</label>
+            <select 
+              value={formData.transportMode} 
+              onChange={(e) => setField("transportMode", e.target.value)} 
+              className="input-field"
+            >
+              <option value="Car">Personal Car</option>
+              <option value="Bus">Bus</option>
+              <option value="Train">Train</option>
+              <option value="Flight">Flight</option>
+              <option value="Two-Wheeler">Two-Wheeler (Bike/Scooter)</option>
+            </select>
           </div>
+
+          {["Car", "Two-Wheeler"].includes(formData.transportMode) && (
+            <div className="grid grid-cols-2 gap-4 animate-fade-in">
+              <Input label="Vehicle make (optional)" placeholder="Maruti" value={formData.vehicleMake} onChange={(e) => setField("vehicleMake", e.target.value)} />
+              <Input label="Vehicle model (optional)" placeholder="Swift" value={formData.vehicleModel} onChange={(e) => setField("vehicleModel", e.target.value)} />
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Description (optional)</label>
@@ -161,8 +182,11 @@ const PublishRide: React.FC = () => {
             <div className="flex justify-between"><span className="text-gray-500">Time</span><span className="font-medium">{formData.departureTime}</span></div>
             <div className="flex justify-between"><span className="text-gray-500">Capacity</span><span className="font-medium">{formData.totalWeightCapacity} kg</span></div>
             <div className="flex justify-between"><span className="text-gray-500">Price/kg</span><span className="font-bold text-primary-600">₹{formData.pricePerKg}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Transport</span><span className="font-medium">{formData.transportMode}</span></div>
             <div className="flex justify-between"><span className="text-gray-500">Accepts</span><span className="font-medium max-w-[50%] text-right">{formData.acceptedItemTypes.join(', ')}</span></div>
-            {formData.vehicleMake && <div className="flex justify-between"><span className="text-gray-500">Vehicle</span><span className="font-medium">{formData.vehicleMake} {formData.vehicleModel}</span></div>}
+            {["Car", "Two-Wheeler"].includes(formData.transportMode) && formData.vehicleMake && (
+              <div className="flex justify-between"><span className="text-gray-500">Vehicle</span><span className="font-medium">{formData.vehicleMake} {formData.vehicleModel}</span></div>
+            )}
             {formData.isInstantBooking && <div className="flex justify-between"><span className="text-gray-500">Booking</span><Badge variant="success">⚡ Instant</Badge></div>}
           </div>
         </div>

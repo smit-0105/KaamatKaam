@@ -12,7 +12,7 @@ import Modal from "../../components/ui/Modal";
 import Input from "../../components/ui/Input";
 import { PageSpinner } from "../../components/ui/Spinner";
 import { format } from "date-fns";
-import { MapPin, Clock, Package, Star, Shield, Calendar, Car, MessageCircle, ArrowRight, Zap, Box } from "lucide-react";
+import { MapPin, Clock, Package, Star, Shield, Calendar, Car, Bus, Train, Plane, Bike, MessageCircle, ArrowRight, Zap, Box } from "lucide-react";
 import toast from "react-hot-toast";
 // Mapbox map will be enabled when VITE_MAPBOX_TOKEN is configured
 // import Map, { Marker, NavigationControl } from 'react-map-gl';
@@ -65,7 +65,15 @@ const RideDetail: React.FC = () => {
   const isDriver = user?._id === ride.driver?._id;
   const depDate = new Date(ride.departureDate);
 
-  // Removed old prefIcons mapping
+  const getTransportIcon = (mode: string, className: string) => {
+    switch (mode) {
+      case 'Bus': return <Bus className={className} />;
+      case 'Train': return <Train className={className} />;
+      case 'Flight': return <Plane className={className} />;
+      case 'Two-Wheeler': return <Bike className={className} />;
+      default: return <Car className={className} />;
+    }
+  };
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -139,12 +147,13 @@ const RideDetail: React.FC = () => {
                 <Package className="w-5 h-5 text-primary-500" />
                 <span className="text-sm">{ride.availableWeightCapacity}/{ride.totalWeightCapacity} kg left</span>
               </div>
-              {ride.vehicle?.make && (
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Car className="w-5 h-5 text-primary-500" />
-                  <span className="text-sm">{ride.vehicle.make} {ride.vehicle.model}</span>
-                </div>
-              )}
+              <div className="flex items-center gap-2 text-gray-600">
+                {getTransportIcon(ride.transportMode || 'Car', 'w-5 h-5 text-primary-500')}
+                <span className="text-sm">
+                  {ride.transportMode || 'Car'}
+                  {ride.vehicle?.make ? ` (${ride.vehicle.make})` : ''}
+                </span>
+              </div>
             </div>
 
             {ride.description && (

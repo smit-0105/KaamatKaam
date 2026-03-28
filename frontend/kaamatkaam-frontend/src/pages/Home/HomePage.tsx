@@ -138,7 +138,7 @@ const HomePage: React.FC = () => {
                 {[
                   { icon: <Shield className="w-6 h-6" />, title: "Verified profiles", desc: "Every member goes through profile verification with email and phone." },
                   { icon: <Star className="w-6 h-6" />, title: "Ratings & reviews", desc: "Read reviews from fellow travelers before booking your ride." },
-                  { icon: <Users className="w-6 h-6" />, title: "In-app messaging", desc: "Chat directly with your driver before the trip to coordinate details." },
+                  { icon: <Users className="w-6 h-6" />, title: "In-app messaging", desc: "Chat directly with your traveler before the trip to coordinate details." },
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">

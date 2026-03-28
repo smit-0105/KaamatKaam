@@ -1,5 +1,5 @@
 import React from "react";
-import { Star, MapPin, Clock, Package, ArrowRight } from "lucide-react";
+import { Star, MapPin, Clock, Package, ArrowRight, Car, Bus, Train, Plane, Bike } from "lucide-react";
 import { Link } from "react-router-dom";
 import Avatar from "./ui/Avatar";
 import { format } from "date-fns";
@@ -10,6 +10,16 @@ interface RideCardProps {
 
 const RideCard: React.FC<RideCardProps> = ({ ride }) => {
   const departureDate = new Date(ride.departureDate);
+
+  const getTransportIcon = (mode: string, className: string) => {
+    switch (mode) {
+      case 'Bus': return <Bus className={className} />;
+      case 'Train': return <Train className={className} />;
+      case 'Flight': return <Plane className={className} />;
+      case 'Two-Wheeler': return <Bike className={className} />;
+      default: return <Car className={className} />;
+    }
+  };
 
   return (
     <Link to={`/rides/${ride._id}`} className="block">
@@ -30,6 +40,10 @@ const RideCard: React.FC<RideCardProps> = ({ ride }) => {
             </div>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+              <span className="flex items-center gap-1">
+                {getTransportIcon(ride.transportMode || 'Car', 'w-4 h-4')}
+                {ride.transportMode || 'Car'}
+              </span>
               <span className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
                 {format(departureDate, "EEE, dd MMM")} · {ride.departureTime}
